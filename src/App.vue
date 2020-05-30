@@ -10,8 +10,34 @@
 </template>
 
 <script>
-  export default {}
-  document.addEventListener('DOMContentLoaded',() => {
+  import { mapGetters } from 'vuex'
+  const getters = {
+    a: () => 1,
+    b: () => 2,
+    c: () => 3
+  }
+  function fn (keys) {
+    const data = {}
+    keys.forEach(key => {
+      if (getters.hasOwnProperty(key)) {
+        data[key] = getters[key]
+      }
+    })
+    return data
+  }
+  export default {
+    computed: {
+      ...mapGetters(['test']),
+      ...fn(['a', 'b'])
+    },
+    mounted () {
+      this.$store.dispatch('setTest', 10).then(() => {
+        console.log(this.test)
+        console.log(this.a,this.b,this.c)
+      })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', () => {
     const html = document.querySelector('html')
     let fontSize = window.innerWidth / 10
     fontSize = fontSize > 50 ? 50 : fontSize // 设置上限50px

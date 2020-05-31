@@ -3,7 +3,7 @@
     <div class="setting-wrapper" v-show="menuVisible && settingVisible === 0">
       <div class="setting-font-size">
         <div class="preview" ref="left">
-          <span :style="styleLeft" ref="leftText">A</span>
+          <div class="preview" :style="{fontSize: fontSizeList[0].fontSize + 'px'}">A</div>
         </div>
         <div class="select">
           <div class="select-wrapper" v-for="(item, index) in fontSizeList" :key="index"
@@ -17,9 +17,7 @@
             <div class="line"></div>
           </div>
         </div>
-        <div class="preview" ref="right">
-          <span :style="styleRight" ref="rightText">A</span>
-        </div>
+        <div class="preview" :style="{fontSize: fontSizeList[fontSizeList.length - 1].fontSize + 'px'}">A</div>
       </div>
       <div class="setting-font-family" @click.stop="showFontFamilySetting">
         <div class="setting-font-family-text-wrapper">
@@ -39,37 +37,15 @@
   export default {
     name: 'EbookSettingFont',
     mixins: [ebookMixin],
-    data() {
+    data () {
       return {
-        styleLeft: {},
-        styleRight: {},
         fontSizeList: FONT_SIZE_LIST
       }
     },
-    watch: {
-      settingVisible (v) {
-        if (v === 0) {
-          this.$nextTick(() => {
-            this.genStyle()
-          })
-        }
-      }
-    },
     methods: {
-      genStyle () {
-        const left = this.$refs.left.getBoundingClientRect().width
-        const right = this.$refs.left.getBoundingClientRect().width
-        const leftText = this.$refs.leftText.getBoundingClientRect().width
-        const rightText = this.$refs.leftText.getBoundingClientRect().width
-        const item = this.$refs.item[0].getBoundingClientRect().width
-        this.styleLeft = {
-          marginLeft: (left + item - leftText) / 2 + 'px',
-          fontSize: this.fontSizeList[0].fontSize + 'px'
-        }
-        this.styleRight = {
-          marginRight: (right + item - rightText) / 2 + 'px',
-          fontSize: this.fontSizeList[this.fontSizeList.length - 1].fontSize + 'px'
-        }
+      setFontSize (fontSize) {
+        this.setDefaultFontSize(fontSize)
+        this.currentBook.rendition.themes.fontSize(fontSize + 'px')
       }
     }
   }

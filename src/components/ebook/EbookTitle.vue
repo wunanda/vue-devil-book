@@ -43,21 +43,28 @@
     display: flex;
     width: 100%;
     height: px2rem(48);
+    background: white;
     box-shadow: 0 px2rem(8) px2rem(8) rgba(0, 0, 0, .15);
     font-size: px2rem(22);
     .left {
       flex: 0 0 px2rem(37);
       @include left;
+      margin-left: px2rem(15);
     }
     .right {
       flex: 1;
       display: flex;
       justify-content: flex-end;
       .icon-wrapper {
-        flex: 0 0 px2rem(37);
-        @include right;
+        flex: 0 0 px2rem(40);
+        @include center;
+        .icon-shelf {
+          font-size: px2rem(22);
+        }
+        .icon-cart {
+          font-size: px2rem(22);
+        }
       }
     }
   }
 </style>
-

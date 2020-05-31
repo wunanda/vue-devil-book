@@ -11,7 +11,7 @@
   export default {
     mixins: [ebookMixin],
     methods: {
-      initEpub () {
+      initEpub: function () {
         const url = 'http://192.168.0.111:8081/epub/' + this.fileName + '.epub'
         this.book = new Epub(url)
         this.setCurrentBook(this.book)
@@ -40,6 +40,17 @@
           // event.preventDefault()
           event.stopPropagation()
         })
+        // 加载css字体 _epubjs/src/utils/contents.js
+        this.redintion.hooks.content.register(contents => {
+          Promise.all([
+            contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`),
+            contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/cabin.css`),
+            contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/montserrat.css`),
+            contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/tangerine.css`)
+          ]).then(() => {
+            // console.log(`${process.env.VUE_APP_RES_URL}`)
+          })
+        })
       },
       prevPage () {
         if (this.redintion) {
@@ -55,16 +66,18 @@
       },
       // 点击反选标题栏和底部导航栏
       toggleTitleAndMenu () {
+        // 菜单栏是否显示
         if (this.menuVisible) {
           this.setSettingVisible(-1)
+          this.setFontFamilyVisible(false)
         }
-          this.setMenuVisible(!this.menuVisible)
-
+        this.setMenuVisible(!this.menuVisible)
       },
       // 隐藏反选标题栏和底部导航栏
       hideTitleAndMenu () {
         this.setMenuVisible(false)
         this.setSettingVisible(-1)
+        this.setFontFamilyVisible(false)
       }
     },
     mounted () {

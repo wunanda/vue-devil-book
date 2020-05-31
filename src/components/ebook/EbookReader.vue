@@ -5,13 +5,11 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { ebookMixin } from '../../utils/mixin'
   import Epub from 'epubjs'
   global.ePub = Epub
   export default {
-    computed: {
-      ...mapGetters(['fileName'])
-    },
+    mixins: [ebookMixin],
     methods: {
       initEpub () {
         const url = 'http://192.168.0.111:8081/epub/' + this.fileName + '.epub'
@@ -45,21 +43,29 @@
       prevPage () {
         if (this.redintion) {
           this.redintion.prev()
+          this.hideTitleAndMenu()
         }
       },
       nextPage () {
         if (this.redintion) {
           this.redintion.next()
+          this.hideTitleAndMenu()
         }
       },
+      // 点击反选标题栏和底部导航栏
       toggleTitleAndMenu () {
         if (this.redintion) {
-
+          this.$store.dispatch('setMenuVisible', !this.menuVisible)
         }
+      },
+      // 隐藏反选标题栏和底部导航栏
+      hideTitleAndMenu () {
+        this.$store.dispatch('setMenuVisible', false)
       }
     },
     mounted () {
       const fileName = this.$route.params.fileName.split('|').join('/')
+      // 原生this.$store.state.book.fileName dispatch赋值后return commit 才可以.then
       this.$store.dispatch('setFileName', fileName).then(() => {
         this.initEpub()
       })

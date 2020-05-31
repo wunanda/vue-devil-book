@@ -5,7 +5,8 @@ const book = {
     settingVisible: -1, // -1表示不显，0表示显示字号，1：主题，2进度条，3目录
     defaultFontSize: 16,
     currentBook: null, // 当前 epub解析的book
-    defaultFontFamily: 'Default'
+    defaultFontFamily: 'Default',
+    fontFamilyVisible: false
   },
   mutations: {
     'SET_FILENAME': (state, fileName) => {
@@ -25,6 +26,9 @@ const book = {
     },
     'SET_DEFAULTFONTFAMILY': (state, defaultFontFamily) => {
       state.defaultFontFamily = defaultFontFamily
+    },
+    'SET_FONT_FAMILY_VISIBLE': (state, fontFamilyVisible) => {
+      state.fontFamilyVisible = fontFamilyVisible
     }
   }
 }

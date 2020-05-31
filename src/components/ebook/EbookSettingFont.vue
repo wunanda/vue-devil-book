@@ -46,6 +46,9 @@
       setFontSize (fontSize) {
         this.setDefaultFontSize(fontSize)
         this.currentBook.rendition.themes.fontSize(fontSize + 'px')
+      },
+      showFontFamilySetting () {
+        this.setFontFamilyVisible(true)
       }
     }
   }

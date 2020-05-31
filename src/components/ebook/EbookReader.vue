@@ -54,18 +54,21 @@
       },
       // 点击反选标题栏和底部导航栏
       toggleTitleAndMenu () {
-        if (this.redintion) {
-          this.setMenuVisible(!this.menuVisible)
+        if (this.menuVisible) {
+          this.setSettingVisible(-1)
         }
+          this.setMenuVisible(!this.menuVisible)
+
       },
       // 隐藏反选标题栏和底部导航栏
       hideTitleAndMenu () {
         this.setMenuVisible(false)
+        this.setSettingVisible(-1)
       }
     },
     mounted () {
       const fileName = this.$route.params.fileName.split('|').join('/')
-      this.$store.dispatch('setFileName', fileName).then(() => {
+      this.setFileName(fileName).then(() => {
         this.initEpub()
       })
     }

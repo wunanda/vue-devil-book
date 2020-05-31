@@ -1,7 +1,10 @@
 const book = {
   state: {
     fileName: '',
-    menuVisible: false
+    menuVisible: false,
+    settingVisible: -1, // -1表示不显，0表示显示字号，1：主题，2进度条，3目录
+    defaultFontSize: 16,
+    defaultFontFamily: 'Default'
   },
   mutations: {
     'SET_FILENAME': (state, fileName) => {
@@ -9,8 +12,17 @@ const book = {
     },
     'SET_MENUVISIBLE': (state, menuVisible) => {
       state.menuVisible = menuVisible
+    },
+    'SET_SETTINGVISIBLE': (state, settingVisible) => {
+      state.settingVisible = settingVisible
+    },
+    'SET_DEFAULTFONTSIZE': (state, defaultFontSize) => {
+      state.defaultFontSize = defaultFontSize
+    },
+    'SET_DEFAULTFONTFAMILY': (state, defaultFontFamily) => {
+      state.defaultFontFamily = defaultFontFamily
     }
   }
 }
 
-export default book;
+export default book

@@ -7,27 +7,51 @@
 <script>
   import { ebookMixin } from '../../utils/mixin'
   import Epub from 'epubjs'
+  import { getFontFamily, getFontSize, saveFontFamily, saveFontSize } from '../../utils/localStorage'
   global.ePub = Epub
   export default {
     mixins: [ebookMixin],
     methods: {
+      // 设置字体大小
+      initFontSize () {
+        let fontSize = getFontSize(this.fileName)
+        if (!fontSize) {
+          saveFontSize(this.fileName, this.defaultFontSize)
+        } else {
+          this.rendition.themes.fontSize(fontSize + 'px')
+          this.setDefaultFontSize(fontSize)
+        }
+      },
+      // 设置字体
+      initFontFamily () {
+        let font = getFontFamily(this.fileName)
+        if (!font) {
+          saveFontFamily(this.fileName, this.defaultFontFamily)
+        } else {
+          this.rendition.themes.font(font)
+          this.setDefaultFontFamily(font)
+        }
+      },
       initEpub: function () {
         const url = 'http://192.168.0.111:8081/epub/' + this.fileName + '.epub'
         this.book = new Epub(url)
         this.setCurrentBook(this.book)
-        this.redintion = this.book.renderTo('read', {
+        this.rendition = this.book.renderTo('read', {
           width: window.innerWidth,
           height: window.innerHeight
           // method: 'default' // 微信兼容性 但是加上的话web解析不出带图片的
         })
-        this.redintion.display()
+        this.rendition.display().then(() => {
+          this.initFontSize()
+          this.initFontFamily()
+        })
         // 手指触摸事件
-        this.redintion.on('touchstart', event => {
+        this.rendition.on('touchstart', event => {
           this.touchStartX = event.changedTouches[0].clientX
           this.touchStartTime = event.timeStamp
         })
         // 离开手指
-        this.redintion.on('touchend', event => {
+        this.rendition.on('touchend', event => {
           const offsetX = event.changedTouches[0].clientX - this.touchStartX
           const time = event.timeStamp - this.touchStartTime
           if (time < 500 && offsetX > 40) {
@@ -41,7 +65,7 @@
           event.stopPropagation()
         })
         // 加载css字体 _epubjs/src/utils/contents.js
-        this.redintion.hooks.content.register(contents => {
+        this.rendition.hooks.content.register(contents => {
           Promise.all([
             contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`),
             contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/cabin.css`),
@@ -53,14 +77,14 @@
         })
       },
       prevPage () {
-        if (this.redintion) {
-          this.redintion.prev()
+        if (this.rendition) {
+          this.rendition.prev()
           this.hideTitleAndMenu()
         }
       },
       nextPage () {
-        if (this.redintion) {
-          this.redintion.next()
+        if (this.rendition) {
+          this.rendition.next()
           this.hideTitleAndMenu()
         }
       },

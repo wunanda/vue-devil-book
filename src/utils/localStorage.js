@@ -6,10 +6,10 @@ import Storage from 'web-storage-cache'
 const localStorage = new Storage()
 
 export function setLocalStorage (key, value) {
-  return localStorage.set(key,value)
+  return localStorage.set(key, value)
 }
 
-export function getLocalStorage(key){
+export function getLocalStorage (key) {
   return localStorage.get(key)
 }
 
@@ -65,7 +65,7 @@ export function getFontFamily (fileName) {
  * @param fileName
  * @param font
  */
-export function saveFontFamily (fileName,font) {
+export function saveFontFamily (fileName, font) {
   return setBookObject(fileName, 'fontFamily', font)
 }
 
@@ -85,4 +85,19 @@ export function getFontSize (fileName) {
  */
 export function saveFontSize (fileName, fontSize) {
   setBookObject(fileName, 'fontSize', fontSize)
+}
+
+/**
+ * 获取本地locale中文还是英文
+ */
+export function getLocale () {
+  return getLocalStorage('locale')
+}
+
+/**
+ * 保存本地locale中文还是英文
+ * @param locale
+ */
+export function saveLocale (locale) {
+  return setLocalStorage('locale', locale)
 }

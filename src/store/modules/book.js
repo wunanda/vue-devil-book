@@ -1,12 +1,12 @@
 const book = {
   state: {
-    fileName: '',
-    menuVisible: false,
+    fileName: '', // 文件名称
+    menuVisible: false, // 菜单栏是否显示
     settingVisible: -1, // -1表示不显，0表示显示字号，1：主题，2进度条，3目录
-    defaultFontSize: 16,
+    defaultFontSize: 16, // 默认字体大小
     currentBook: null, // 当前 epub解析的book
-    defaultFontFamily: 'Default',
-    fontFamilyVisible: false
+    defaultFontFamily: 'Default', // 当前选中的字体
+    fontFamilyVisible: false // 是否显示字体选中栏
   },
   mutations: {
     'SET_FILENAME': (state, fileName) => {
